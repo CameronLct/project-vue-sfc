@@ -1,6 +1,7 @@
 <template>
     <div class="parking">
-        <button class="favoris">★☆</button>
+        <button id="favorite" class="favorite" @click="removeFavorite()" v-if="favorite == true">>★</button>
+        <button id="no-favorite" class="favorite" @click="addFavorite()" v-else>☆</button>
         <p><b>{{title}}</b></p>
         <p>Place disponible</p>
         <p><b>{{ place_dispo }}</b></p>
@@ -13,18 +14,36 @@
 
 <script>
 export default {
-  name: 'card',
-  props: {
-    title: String,
-    place_dispo: Number,
-    nb_place: Number,
-    distance: Number
-  }
+    name: 'card',
+    props: {
+        favorite: Boolean,
+        title: String,
+        place_dispo: Number,
+        nb_place: Number,
+        distance: Number
+    },
+    methods: {
+        removeFavorite() {
+            let parkings = JSON.parse(localStorage.getItem('parkings'))
+            let parkingIndex = parkings.findIndex(parking => parking.fields.grp_nom = this.title)
+            parkings = parkings.splice(parkingIndex, 1)
+            localStorage.setItem('parkings', JSON.stringify(parkings))
+            this.$emit("removeFavorite")
+        },
+
+        addFavorite() {
+            let parkings = JSON.parse(localStorage.getItem('parkings'))
+            parkings.push(this.title)
+            localStorage.setItem('parkings', JSON.stringify(parkings))
+            this.$emit("addFavorite")
+        }
+    },
 }
+
 </script>
 
 <style scoped>
-    .favoris {
+    .favorite {
         background: transparent;
         border: transparent;
         cursor: pointer;
