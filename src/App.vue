@@ -42,5 +42,6 @@
 }
 .menu a:hover {
   color: green;
+  text-decoration: underline;
 }
 </style>
