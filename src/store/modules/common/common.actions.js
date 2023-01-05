@@ -6,7 +6,8 @@ export default {
         let parkings = [];
 
         const response = await axios.get(apiURL);
-        parkings = response.data.records;        
-        commit("setParkings", parkings)
+        parkings = response.data.records;
+        commit("setParkings", parkings);
+        return parkings;
     },
 }
