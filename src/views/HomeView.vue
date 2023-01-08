@@ -10,7 +10,7 @@
         </div>
         <div class="available">
           <p>Filtré par distance du parking (km)</p>
-          <input max="30" min="1" class="distance-input" type="number">
+          <input max="30" min="1" class="distance-input" type="number" v-model="distance">
         </div>
       </div>
       <div class="list-parkings">
@@ -36,6 +36,7 @@ export default {
         "longitude": -1.5291629,
         "latitude": 47.213649
       },
+      distance: 20
     }
   },
   components: {
@@ -45,14 +46,16 @@ export default {
     filteredParkings: function () {
       let parkings_array = this.parkings;
       let searchString = this.searchString;
+      let distance = this.distance;
       const available = this.available;
 
       if (!parkings_array) return [];
 
       searchString = searchString.trim().toLowerCase();
 
-      if (available) parkings_array = parkings_array.filter(item => item.fields.grp_disponible !== 0)
-      if (searchString) parkings_array = parkings_array.filter(item => item.fields.grp_nom.toLowerCase().indexOf(searchString) !== -1)
+      if (available) parkings_array = parkings_array.filter(item => item.fields.grp_disponible !== 0);
+      if (searchString) parkings_array = parkings_array.filter(item => item.fields.grp_nom.toLowerCase().indexOf(searchString) !== -1);
+      if (distance) parkings_array = parkings_array.filter(item => item.distance < distance);
       return parkings_array;
     }
   },
@@ -61,8 +64,6 @@ export default {
   },
   async mounted() {
     this.parkings = await this.setParkings();
-
-    
   }
 }
 </script>
