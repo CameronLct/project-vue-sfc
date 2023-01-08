@@ -1,9 +1,11 @@
 <template>
-  <nav>
-    <router-link to="/">Accueil</router-link> |
-    <router-link to="/carte">Carte</router-link>
-    <router-link to="/carte/:parkingId">Carte</router-link>
-    <router-link to="/favoris">Favoris</router-link>
+  <nav class="menu">
+    <img width="140" src="./assets/logo-tan.png" alt="Logo Vite mon parking">
+    <ul>
+      <li><router-link to="/">Accueil</router-link></li>
+      <li> <router-link to="/carte">Carte</router-link></li>
+      <li><router-link to="/favoris">Favoris</router-link></li>
+    </ul>
   </nav>
   <router-view/>
 </template>
@@ -16,5 +18,33 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-radius: 10px;
+  box-shadow: 0 -1px 4px 0 rgb(26 26 26 / 8%), 0 4px 8px 0 rgb(26 26 26 / 12%);
+  max-width: 550px;
+  padding: 10px;
+  margin: 30px auto;
+}
+.menu ul {
+  display: flex;
+  list-style-type: none;
+  font-size: 25px;
+  font-weight: 500;
+}
+.menu a {
+  text-decoration: none;
+  color: black;
+  padding: 0 10px;
+}
+.menu a:hover {
+  color: green;
+  text-decoration: underline;
+}
+.parking p {
+  margin: 4px;
 }
 </style>

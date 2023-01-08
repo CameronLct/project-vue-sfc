@@ -1,5 +1,5 @@
 <template>
   <div class="carte">
-    <h1>This is an favorite page</h1>
+    <h1>Il devrait avoir un tableau des parkings favoris ici</h1>
   </div>
 </template>
