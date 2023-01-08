@@ -5,6 +5,10 @@
       <div class="filter">
         <input class="search" type="text" placeholder="Nom du parking" v-model="searchString">
         <div class="available">
+          <p>Favoris</p>
+          <input type="checkbox" v-model="showFavorite">
+        </div>
+        <div class="available">
           <p>Filtré par parking disponible</p>
           <input type="checkbox" v-model="available">
         </div>
@@ -23,6 +27,7 @@
               @addFavorite="addFavorite(parking.fields.grp_nom)"
               @removeFavorite="removeFavorite(parking.fields.grp_nom)"
         />
+        <p v-if="filteredParkings.length === 0" ><strong>Il n'y a aucun parking a afficher</strong></p>
       </div>
     </div>
   </div>
@@ -44,7 +49,8 @@ export default {
         "longitude": -1.5291629,
         "latitude": 47.213649
       },
-      distance: 20
+      distance: 20,
+      showFavorite: false
     }
   },
   components: {
@@ -54,13 +60,15 @@ export default {
     filteredParkings: function () {
       let parkings_array = this.parkings;
       let searchString = this.searchString;
-      let distance = this.distance;
+      const distance = this.distance;
+      const showFavorite = this.showFavorite
       const available = this.available;
 
       if (!parkings_array) return [];
 
       searchString = searchString.trim().toLowerCase();
 
+      if (showFavorite ) parkings_array = parkings_array.filter(item => item.favorite);
       if (available) parkings_array = parkings_array.filter(item => item.fields.grp_disponible !== 0);
       if (searchString) parkings_array = parkings_array.filter(item => item.fields.grp_nom.toLowerCase().indexOf(searchString) !== -1);
       if (distance) parkings_array = parkings_array.filter(item => item.distance < distance);
