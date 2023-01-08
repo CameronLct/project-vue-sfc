@@ -14,7 +14,8 @@
         </div>
       </div>
       <div class="list-parkings">
-        <Card v-for="parking in filteredParkings" :title="parking.fields.grp_nom" :place_dispo="parking.fields.disponibilite" :nb_place="parking.fields.grp_exploitation" :distance=3 />
+        <Card v-for="parking in filteredParkings" :title="parking.fields.grp_nom"
+          :place_dispo="parking.fields.disponibilite" :nb_place="parking.fields.grp_exploitation" :distance="parking.distance" />
       </div>
     </div>
   </div>
@@ -30,7 +31,11 @@ export default {
     return {
       parkings: [],
       searchString: "",
-      available: false
+      available: false,
+      position: {
+        "longitude": -1.5291629,
+        "latitude": 47.213649
+      },
     }
   },
   components: {
@@ -41,7 +46,6 @@ export default {
       let parkings_array = this.parkings;
       let searchString = this.searchString;
       const available = this.available;
-      
 
       if (!parkings_array) return [];
 
@@ -57,7 +61,8 @@ export default {
   },
   async mounted() {
     this.parkings = await this.setParkings();
-    console.log(this.parkings)
+
+    
   }
 }
 </script>
