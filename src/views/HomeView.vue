@@ -14,8 +14,15 @@
         </div>
       </div>
       <div class="list-parkings">
-        <Card v-for="parking in filteredParkings" :title="parking.fields.grp_nom"
-          :place_dispo="parking.fields.disponibilite" :nb_place="parking.fields.grp_exploitation" :distance="parking.distance" />
+        <Card v-for="parking in filteredParkings"
+              :favorite="parking.favorite"
+              :title="parking.fields.grp_nom"
+              :place_dispo="parking.fields.disponibilite"
+              :nb_place="parking.fields.grp_exploitation"
+              :distance="parking.distance"
+              @addFavorite="addFavorite(parking.fields.grp_nom)"
+              @removeFavorite="removeFavorite(parking.fields.grp_nom)"
+        />
       </div>
     </div>
   </div>
@@ -27,6 +34,7 @@ import Card from "../components/Card.vue";
 
 export default {
   name: 'HomeView',
+  emits: ["addFavorite", "removeFavorite"],
   data() {
     return {
       parkings: [],
@@ -61,6 +69,29 @@ export default {
   },
   methods: {
     ...mapActions("commonStore", ["setParkings"]),
+
+    addFavorite(title) {
+      let fparkings = JSON.parse(localStorage.getItem('parkings'))
+      if (fparkings === null) fparkings = []
+      // if (!JSON.parse(localStorage.getItem('parkings')).find(f => f === title)) {
+        fparkings.push(title)
+        let parkingIndex = this.parkings.findIndex(p => p.fields.grp_nom === title)
+        this.parkings[parkingIndex].favorite = true
+        localStorage.setItem('parkings', JSON.stringify(fparkings))
+      // }
+      console.log(JSON.parse(localStorage.getItem('parkings')))
+    },
+    removeFavorite(title) {
+      console.log("DEBUT CALL")
+      let fparkings = JSON.parse(localStorage.getItem('parkings'))
+      console.log(fparkings)
+      if (fparkings === null) fparkings = []
+      let fparkingIndex = fparkings.findIndex(p => p === title)
+      fparkings.splice(fparkingIndex, 1)
+      let parkingIndex = this.parkings.findIndex(p => p.fields.grp_nom === title)
+      this.parkings[parkingIndex].favorite = false
+      localStorage.setItem('parkings', JSON.stringify(fparkings))
+      }
   },
   async mounted() {
     this.parkings = await this.setParkings();
